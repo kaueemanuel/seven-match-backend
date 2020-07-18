@@ -1,8 +1,10 @@
+import Contato from 'src/models/Contato'
 import { Model, DataTypes } from 'sequelize'
 import sequelize from '../database/index'
 import crypto from 'crypto'
 
 class Equipe extends Model {
+  [x: string]: any
   static gerarSalt () {
     return crypto.randomBytes(16)
       .toString('hex')
@@ -35,12 +37,13 @@ Equipe.init({
   nome: DataTypes.STRING,
   email: DataTypes.STRING,
   senha: DataTypes.STRING,
-  telefone: DataTypes.STRING,
   arena: DataTypes.STRING,
   salt: DataTypes.STRING
 }, {
   sequelize,
-  modelName: 'Equipe'
+  modelName: 'equipe'
 })
+
+Equipe.hasMany(Contato, { foreignKey: 'equipe_id', sourceKey: 'id', as: 'contatos' })
 
 export default Equipe
