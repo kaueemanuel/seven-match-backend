@@ -2,32 +2,39 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('equipes', {
+    await queryInterface.createTable('agenda_jogos', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
       },
-      nome: {
+      data: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      local: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
+      confirmado: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      equipe_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true
+        references: { model: 'equipes', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      senha: {
-        type: Sequelize.STRING,
+      adversario_id: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
-      salt: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      arena: {
-        type: Sequelize.STRING,
+      votou: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
         allowNull: false
       },
       created_at: {
@@ -42,6 +49,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('equipes')
+    await queryInterface.dropTable('agenda_jogos')
   }
 }

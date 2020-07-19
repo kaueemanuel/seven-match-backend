@@ -5,7 +5,16 @@ class Contato extends Model {
 }
 
 Contato.init({
-  telefone: DataTypes.STRING
+  telefone: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notNull: {
+        msg: 'Campo deve ser preenchido'
+      }
+    }
+
+  }
 }, {
   sequelize,
   modelName: 'contato'
