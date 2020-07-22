@@ -13,7 +13,7 @@ class Equipe extends Model {
   }
 
   static sha512 (senha:string, salt:string) {
-    var hash = crypto.createHmac('sha512', salt) // Algoritmo de cripto sha512
+    var hash = crypto.createHmac('sha512', salt)
     hash.update(senha)
     var hashFinal = hash.digest('hex')
     return {
@@ -29,8 +29,8 @@ class Equipe extends Model {
         hash: null
       }
     }
-    var salt = Equipe.gerarSalt() // Vamos gerar o salt
-    var senhaESalt = Equipe.sha512(senha, salt) // Pegamos a senha e o salt
+    var salt = Equipe.gerarSalt()
+    var senhaESalt = Equipe.sha512(senha, salt)
     return senhaESalt
   }
 
@@ -68,7 +68,9 @@ Equipe.init({
     type: DataTypes.STRING,
     allowNull: false,
     set (value:string) {
-      this.setDataValue('senha', Equipe.criptografarSenha(value).hash)
+      const senha = Equipe.criptografarSenha(value)
+      this.setDataValue('senha', senha.hash)
+      this.setDataValue('salt', senha.salt)
     },
     validate: {
       notContains: {
@@ -86,14 +88,7 @@ Equipe.init({
     }
   },
   salt: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    set (value:string) {
-      this.setDataValue('salt', Equipe.criptografarSenha(value).salt)
-    },
-    validate: {
-      notNull: { msg: 'Campo deve ser preenchido' }
-    }
+    type: DataTypes.STRING
   }
 }, {
   sequelize,

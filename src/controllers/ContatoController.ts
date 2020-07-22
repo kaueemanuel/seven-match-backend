@@ -11,12 +11,17 @@ class ContatoController {
       const { telefone } = req.body
 
       const equipe = await Equipe.findByPk(equipe_id)
-      if (!equipe) return res.status(400).json({ erro: 'Equipe não encontrada' })
+
+      if (!equipe) {
+        const errors = [{ message: 'Equipe não encontrada' }]
+        return res.status(400).json(errors)
+      }
 
       const contato = await Contato.create({ telefone, equipe_id })
       res.status(200).json(contato)
     } catch (error) {
-      return res.status(400).json(error)
+      const errors = [{ message: error }]
+      return res.status(400).json(errors)
     }
   }
 
@@ -28,7 +33,11 @@ class ContatoController {
       const equipe = await Equipe.findByPk(equipe_id, {
         include: { association: 'contatos' }
       })
-      if (!equipe) return res.status(400).json({ erro: 'Equipe não encontrada' })
+
+      if (!equipe) {
+        const errors = [{ message: 'Equipe não encontrada' }]
+        return res.status(400).json(errors)
+      }
 
       res.status(200).json(equipe.contatos)
     } catch (error) {

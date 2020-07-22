@@ -36,9 +36,12 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.0.23",
     "@types/validator": "^13.1.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "pg": "^8.3.0",
     "sequelize": "^6.3.3"

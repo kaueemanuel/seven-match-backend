@@ -24,7 +24,7 @@ module.exports = {
       },
       salt: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       arena: {
         type: Sequelize.STRING,

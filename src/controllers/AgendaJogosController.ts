@@ -30,8 +30,10 @@ class AgendaJogosController {
       const { equipe_id } = req.params
 
       const equipe = await Equipe.findByPk(equipe_id)
-      if (!equipe) return res.status(400).json({ erro: 'Equipe não encontrada' })
-
+      if (!equipe) {
+        const errors = [{ message: 'Equipe não encontrada' }]
+        return res.status(400).json(errors)
+      }
       // eslint-disable-next-line camelcase
       const agenda_jogos = await AgendaJogos.findAll({
         where: {
@@ -45,6 +47,34 @@ class AgendaJogosController {
       res.status(200).json(agenda_jogos)
     } catch (error) {
       return res.status(400).json(error)
+    }
+  }
+
+  async deletar (req:Request, res:Response) {
+    try {
+    // eslint-disable-next-line camelcase
+      const { equipe_id } = req.params
+
+      const equipe = await Equipe.findByPk(equipe_id)
+      if (!equipe) {
+        const errors = [{ message: 'Equipe não encontrada' }]
+        return res.status(400).json(errors)
+      }
+
+      // eslint-disable-next-line camelcase
+      const agenda_jogos = await AgendaJogos.findAll({
+        where: {
+          [Op.or]: [
+            { equipe_id: equipe_id },
+            { adversario_id: equipe_id }
+          ]
+        }
+      })
+
+      res.status(200).json(agenda_jogos)
+    } catch (error) {
+      const errors = [{ message: error }]
+      return res.status(400).json(errors)
     }
   }
 }
